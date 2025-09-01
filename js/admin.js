@@ -1,140 +1,116 @@
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+const form = document.getElementById("product-form");
+const tableBody = document.querySelector("#products-table tbody");
 
-const supabaseUrl = 'https://nayodkxfawyfgobxbpbd.supabase.co'
-const supabaseKey = 'YOUR_ANON_KEY' // ❗ Replace with anon key, never service_role
-const supabase = createClient(supabaseUrl, supabaseKey)
-
-// Elements
-const productForm = document.getElementById('product-form')
-const productsTableBody = document.querySelector('#products-table tbody')
-
-// Load products from Supabase
+// --- Fetch & display products ---
 async function loadProducts() {
-    const { data: products, error } = await supabase.from('products').select('*')
-
-    if (error) {
-        console.error('Error loading products:', error)
-        return
-    }
-
-    renderProducts(products)
+  try {
+    const res = await fetch("/api/products");
+    if (!res.ok) throw new Error("Failed to load products");
+    const products = await res.json();
+    renderProducts(products);
+  } catch (err) {
+    console.error(err);
+    tableBody.innerHTML = "<tr><td colspan='5'>Failed to load products</td></tr>";
+  }
 }
 
-// Render products in table
 function renderProducts(products) {
-    productsTableBody.innerHTML = ''
-
-    products.forEach(product => {
-        const row = document.createElement('tr')
-        row.innerHTML = `
-            <td>${product.name}</td>
-            <td>${product.category}</td>
-            <td>R${product.price}</td>
-            <td>${product.stock_quantity || '-'}</td>
-            <td>
-                <button class="edit-btn" data-id="${product.id}">Edit</button>
-                <button class="delete-btn" data-id="${product.id}">Delete</button>
-            </td>
-        `
-        productsTableBody.appendChild(row)
-    })
-
-    // Add event listeners for buttons
-    document.querySelectorAll('.edit-btn').forEach(btn => {
-        btn.addEventListener('click', () => editProduct(btn.dataset.id))
-    })
-    document.querySelectorAll('.delete-btn').forEach(btn => {
-        btn.addEventListener('click', () => deleteProduct(btn.dataset.id))
-    })
+  tableBody.innerHTML = "";
+  products.forEach(product => {
+    tableBody.innerHTML += `
+      <tr>
+        <td>${product.name}</td>
+        <td>${product.category}</td>
+        <td>R${product.price}</td>
+        <td>${product.stock_quantity || 0}</td>
+        <td>
+          <button onclick="editProduct('${product.id}')">Edit</button>
+          <button onclick="deleteProduct('${product.id}')">Delete</button>
+        </td>
+      </tr>
+    `;
+  });
 }
 
-// Add new product
-productForm.addEventListener('submit', async (e) => {
-    e.preventDefault()
+// --- Add / Update product ---
+form.addEventListener("submit", async e => {
+  e.preventDefault();
+  const product = {
+    name: form.name.value,
+    category: form.category.value,
+    price: parseFloat(form.price.value),
+    stock_quantity: parseInt(form.stock_quantity.value) || 0,
+    image_url: form.image_url.value
+  };
 
-    const newProduct = {
-        name: document.getElementById('name').value,
-        category: document.getElementById('category').value,
-        price: parseFloat(document.getElementById('price').value),
-        stock_quantity: parseInt(document.getElementById('stock_quantity').value) || 0,
-        image_url: document.getElementById('image_url').value || ''
-    }
+  try {
+    await fetch("/api/products", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(product)
+    });
+    form.reset();
+    loadProducts();
+  } catch (err) {
+    console.error(err);
+    alert("Failed to add product");
+  }
+});
 
-    const { error } = await supabase.from('products').insert([newProduct])
-    if (error) {
-        alert('Error adding product: ' + error.message)
-        return
-    }
-
-    alert('Product added successfully!')
-    productForm.reset()
-    loadProducts()
-})
-
-// Edit product (fill form with values)
-async function editProduct(id) {
-    const { data: product, error } = await supabase.from('products').select('*').eq('id', id).single()
-    if (error) {
-        console.error('Error fetching product:', error)
-        return
-    }
-
-    // Fill form with existing data
-    document.getElementById('name').value = product.name
-    document.getElementById('category').value = product.category
-    document.getElementById('price').value = product.price
-    document.getElementById('stock_quantity').value = product.stock_quantity
-    document.getElementById('image_url').value = product.image_url
-
-    // Change form to update mode
-    productForm.querySelector('button').textContent = 'Update Product'
-
-    // Handle update on submit
-    productForm.onsubmit = async (e) => {
-        e.preventDefault()
-        const updatedProduct = {
-            name: document.getElementById('name').value,
-            category: document.getElementById('category').value,
-            price: parseFloat(document.getElementById('price').value),
-            stock_quantity: parseInt(document.getElementById('stock_quantity').value) || 0,
-            image_url: document.getElementById('image_url').value || ''
-        }
-
-        const { error } = await supabase.from('products').update(updatedProduct).eq('id', id)
-        if (error) {
-            alert('Error updating product: ' + error.message)
-            return
-        }
-
-        alert('Product updated successfully!')
-        productForm.reset()
-        productForm.querySelector('button').textContent = 'Add Product'
-        loadProducts()
-
-        // Restore original submit listener
-        productForm.onsubmit = addProductListener
-    }
-}
-
-// Delete product
+// --- Delete product ---
 async function deleteProduct(id) {
-    if (!confirm('Are you sure you want to delete this product?')) return
-
-    const { error } = await supabase.from('products').delete().eq('id', id)
-    if (error) {
-        alert('Error deleting product: ' + error.message)
-        return
-    }
-
-    alert('Product deleted successfully!')
-    loadProducts()
+  if (!confirm("Are you sure?")) return;
+  try {
+    await fetch(`/api/products/${id}`, { method: "DELETE" });
+    loadProducts();
+  } catch (err) {
+    console.error(err);
+    alert("Failed to delete product");
+  }
 }
 
-// Keep original listener for adding
-function addProductListener(e) {
-    e.preventDefault()
-    // code from above submit handler
+// --- Edit product (pre-fill form) ---
+async function editProduct(id) {
+  try {
+    const res = await fetch(`/api/products`);
+    const products = await res.json();
+    const product = products.find(p => p.id == id);
+    if (!product) return;
+
+    form.name.value = product.name;
+    form.category.value = product.category;
+    form.price.value = product.price;
+    form.stock_quantity.value = product.stock_quantity || 0;
+    form.image_url.value = product.image_url;
+
+    // Change submit to update
+    form.onsubmit = async e => {
+      e.preventDefault();
+      const updates = {
+        name: form.name.value,
+        category: form.category.value,
+        price: parseFloat(form.price.value),
+        stock_quantity: parseInt(form.stock_quantity.value) || 0,
+        image_url: form.image_url.value
+      };
+      await fetch(`/api/products/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updates)
+      });
+      form.reset();
+      loadProducts();
+      form.onsubmit = defaultAdd; // Reset to default add
+    };
+  } catch (err) {
+    console.error(err);
+    alert("Failed to load product for editing");
+  }
 }
 
-// Initial load
-loadProducts()
+function defaultAdd(e) {} // placeholder to reset submit
+
+window.deleteProduct = deleteProduct;
+window.editProduct = editProduct;
+
+loadProducts();

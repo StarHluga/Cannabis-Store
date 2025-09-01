@@ -11,23 +11,25 @@
 
     <!-- Form to Add / Edit Product -->
     <form id="product-form">
+        <input type="hidden" id="product-id" />
         <input type="text" id="name" placeholder="Product Name" required />
         <input type="text" id="category" placeholder="Category" required />
         <input type="number" id="price" placeholder="Price (ZAR)" required />
         <input type="number" id="stock_quantity" placeholder="Stock Quantity" />
         <input type="text" id="image_url" placeholder="Image URL" />
-    <button type="submit">Add Product</button>
+        <button type="submit">Save Product</button>
     </form>
 
     <!-- Products List -->
     <table id="products-table">
-    <thead>
-        <tr>
-        <th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th>Actions</th>
-        </tr>
-    </thead>
-    <tbody></tbody>
+        <thead>
+            <tr>
+                <th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th>Actions</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
     </table>
-    <script src="js/main.js"></script>
+
+    <script type="module" src="js/admin.js"></script>
 </body>
 </html>
