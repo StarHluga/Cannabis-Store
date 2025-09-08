@@ -16,8 +16,10 @@ project API Key/anon public: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdX
 - Home / Catalog
 
 - Product Details
-
+- Education
+- About
 - Cart
+- profile
 
 - Bot Chat Widget
 
@@ -28,3 +30,7 @@ project API Key/anon public: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdX
 - Products CRUD (Add/Edit/Delete)
 
 - Orders Management
+
+**Info Links:**
+
+[Medical News Today: Cannabis](https://www.medicalnewstoday.com/articles/320984)

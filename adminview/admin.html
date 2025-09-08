@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="admin-header">
+        <h1>Admin Dashboard</h1>
+        <div class="admin-profile">
+            <span>Admin Name</span>
+            <a href="#" id="logout-btn">Logout</a>
+        </div>
+    </header>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <nav class="sidebar-nav">
+            <a href="../adminview/admin-profile.html" data-section="profile" data-page="../adminview/admin-profile.html">Profile</a>
+            <a href="#" data-section="products">Products & Inventory</a>
+            <a href="#" data-section="orders">Orders & Purchasing</a>
+            <a href="#" data-section="reports">Reporting & Analytics</a>
+            <a href="#" data-section="system">System Admin</a>
+            <a href="#" data-section="settings">Settings</a>
+        </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="admin-main">
+        <!-- Profile Section -->
+        <section id="profile" class="admin-section hidden">
+            <!-- admin-profile.html will load here dynamically -->
+        </section>
+
+        <!-- Products Section -->
+        <section id="products" class="admin-section hidden">
+            <h2>Products & Inventory</h2>
+            <div id="products-container" class="products-grid">
+                <!-- Product cards will be injected here -->
+            </div>
+        </section>
+
+        <!-- Orders Section -->
+        <section id="orders" class="admin-section hidden">
+            <h2>Orders & Purchasing</h2>
+            <p>Coming soon: List of orders and purchasing details.</p>
+        </section>
+
+        <!-- Reports Section -->
+        <section id="reports" class="admin-section hidden">
+            <h2>Reporting & Analytics</h2>
+            <p>Coming soon: Charts and analytics data.</p>
+        </section>
+
+        <!-- System Admin Section -->
+        <section id="system" class="admin-section hidden">
+            <h2>System Admin</h2>
+            <p>Coming soon: Admin system settings.</p>
+        </section>
+
+        <!-- Settings Section -->
+        <section id="settings" class="admin-section hidden">
+            <h2>Settings</h2>
+            <p>Coming soon: General settings for admin.</p>
+        </section>
+
+        <!-- Landing / Business Summary -->
+        <section id="landing" class="admin-section">
+            <h2>About Business Summary</h2>
+            <p>Welcome to the admin dashboard. Select a section from the sidebar to manage the store.</p>
+        </section>
+    </main>
+
+    <script type="module" src="/js/admin/admin.js"></script>
+</body>
+</html>

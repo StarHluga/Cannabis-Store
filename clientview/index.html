@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <!-- HEADER --> 
+     <header> 
+        <div class="header-left"> 
+            <h1 class="logo">Cannabis Store</h1> 
+        </div> 
+        <div class="header-search">
+            <input type="text" id="product-search" placeholder="Search products...">
+        </div>
+        <div class="header-center"> 
+           
+            <nav class="main-menu"> 
+                <!-- Store Dropdown --> 
+                <div class="dropdown"> 
+                    <a href="index.html" class="dropdown-toggle">Shop Now</a> 
+                    <div class="dropdown-content"> 
+                        <a href="thc.html" data-category="THC">THC</a> 
+                        <a href="cbd.html" data-category="CBD">CBD</a> 
+                        <a href="benefits.html" data-category="Benefits">Benefits</a> 
+                        <a href="strain.html" data-category="Strain">Strain</a> 
+                    </div> 
+                </div> 
+                <!-- Education Dropdown --> 
+                <div class="dropdown"> 
+                    <a href="education.html" class="dropdown-toggle">Cannabis Education</a> 
+                    <div class="dropdown-content"> 
+                        <a href="education-medical.html">Medical & Health</a> 
+                        <a href="education-cultivation.html">Cultivation & Science</a> 
+                        <a href="education-business.html">Business & Management</a> 
+                        <a href="education-consumer.html">Consumer & Social Aspects</a> 
+                    </div> 
+                </div> 
+                <a href="about.html">About Us</a> 
+            </nav> 
+        </div> 
+        <div class="header-right"> 
+            <a href="profile.html" class="profile-icon">Profile</a> 
+            <a href="cart.html" class="cart-icon">Cart</a> 
+        </div> 
+     </header>
+
+  <!-- Products Container -->
+  <div id="products-container"></div>
+
+  <!-- Filter Button & Modal -->
+  <button id="filter-open-btn">Filter Products</button>
+  <div id="filter-modal" class="modal">
+    <div class="modal-content">
+      <button id="close-filter-btn">X</button>
+      <h3>Filter Products</h3>
+      <label><input type="checkbox" id="filter-thc"> THC</label>
+      <label><input type="checkbox" id="filter-cbd"> CBD</label>
+      <label><input type="checkbox" id="filter-benefits"> Benefits</label>
+      <label><input type="checkbox" id="filter-strain"> Strain</label>
+      <button id="apply-filter-btn">Apply</button>
+      <button id="reset-filter-btn">Reset</button>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <main>
+    <h2>Available Products</h2>
+    <div id="products-container" class="products-grid">
+      <!-- Product cards injected here -->
+    </div>
+  </main>
+
+  <!-- CHATBOT -->
+  <div id="chatbot">
+    <div id="chatbot-header">Chat</div>
+    <div id="chatbot-body">
+      <div id="chatbot-messages"></div>
+      <input type="text" id="chatbot-input" placeholder="Ask me...">
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-section">
+      <h4>Shop</h4>
+      <ul>
+        <li><a href="../clientview/index.html">Products</a></li>
+        <li><a href="../clientview/cart.html">Cart</a></li>
+      </ul>
+    </div>
+    <div class="footer-section">
+      <h4>Find</h4>
+      <ul>
+        <li><a href="contact.html">Contact Us</a></li>
+        <li><a href="locations.html">Store Locations</a></li>
+      </ul>
+    </div>
+    <div class="footer-section">
+      <h4>Policy</h4>
+      <ul>
+        <li><a href="privacy.html">Privacy Policy</a></li>
+        <li><a href="terms.html">Terms & Conditions</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script type="module" src="../js/client/menu.js"></script>
+  <script type="module" src="../js/client/index.js"></script>
+</body>
+</html>
